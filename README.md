@@ -43,7 +43,7 @@
 - [Architecture Overview](#-architecture-overview)
 - [Product Principles](#-product-principles)
 - [Functional Scope](#-functional-scope)
-- [What PrizeFlow Is NOT](#-what-prizeflow-is-not)
+- [Coming Soon — Planned Features & Modules](#-coming-soon--planned-features--modules)
 - [Example Scenarios](#-example-scenarios)
 - [Screenshots](#-screenshots)
 - [Why Choose PrizeFlow](#-why-choose-prizeflow)
@@ -247,6 +247,117 @@ journey
 | 6 | Volunteer | Claims prize | Single click → status changes → timestamp recorded |
 | 7 | Organizer | Reviews progress | Dashboard shows real-time claimed/unclaimed counts |
 | 8 | Organizer | Exports reports | One-click CSV download for claimed & unclaimed |
+
+---
+
+### 📖 How to Use PrizeFlow — By Role
+
+Below are simple, step-by-step instructions for each role in the system. Switch roles using the **Role Switcher** dropdown in the top navigation bar.
+
+---
+
+#### 🔑 Super Administrator
+
+**Full access to all features and settings.**
+
+1. Open PrizeFlow → Click **"Get Started"** or **"Enter App"**
+2. You'll land on the **Dashboard** — view all metrics (Total Prizes, Claimed, Unclaimed, Financial Summary)
+3. Go to **Recipients** tab → Click **"Add Recipient"** → Fill in name, type, contact info → Save
+4. Go to **Prizes** tab → Click **"Add Prize"** → Fill in name, description, financial details (value, currency, sponsor) → Save
+5. In the Prizes list, click **"Assign"** on a prize → Select a recipient from the dropdown
+6. When a prize is physically handed over, click **"Claim"** → The timestamp is recorded automatically
+7. Go to **Reports** tab → View claimed/unclaimed lists → Click **"Export CSV"** to download
+8. Go to **RBAC** tab → View the full permission matrix, click on any role to see its details
+9. Use the **Role Switcher** in the top bar to preview how other roles see the application
+
+---
+
+#### 🎪 Event Administrator
+
+**Manages events, recipients, and prizes. No financial or settings access.**
+
+1. Open the app → You see the **Dashboard** with prize counts and progress
+2. Go to **Recipients** → Add, edit, or delete recipients as needed
+3. Go to **Prizes** → Create prizes, assign them to recipients, and mark them as claimed
+4. Go to **Reports** → View and export claimed/unclaimed prize lists
+5. ⚠️ You will **not** see the Financial Management section or RBAC/Settings tab
+
+---
+
+#### 💼 Finance Officer
+
+**Manages budgets, financial tracking, and reports. Read-only on operations.**
+
+1. Open the app → **Dashboard** shows financial summary (Total Budget, Distributed, Remaining)
+2. View **Recipients** and **Prizes** tabs (read-only — you can see data but not add/edit/delete)
+3. Go to **Reports** → View full reports with financial columns → **Export CSV** for accounting
+4. Financial data (prize values, currencies, sponsors, budget categories) is visible across all views
+5. ⚠️ You **cannot** add/edit/delete recipients or prizes — only view and export
+
+---
+
+#### 📦 Distribution Officer
+
+**Handles physical prize handoffs. Can edit and assign prizes and recipients.**
+
+1. Open the app → **Dashboard** shows claim progress
+2. Go to **Recipients** → You can **edit** recipient details and **assign** them to prizes
+3. Go to **Prizes** → You can **edit** prizes and **assign** recipients to them
+4. When handing over a prize, update its status (edit → change Distribution Status)
+5. Go to **Reports** → View distribution status (read-only)
+6. ⚠️ You **cannot** create or delete prizes/recipients, only edit and assign
+
+---
+
+#### 👤 Staff
+
+**Basic view-only access to core features.**
+
+1. Open the app → **Dashboard** shows summary counts
+2. Go to **Recipients** → Browse the list (read-only)
+3. Go to **Prizes** → Browse the prize list (read-only)
+4. ⚠️ You **cannot** add, edit, delete, or export anything — view only
+5. ⚠️ **Reports**, **Financial**, and **RBAC** tabs are not visible
+
+---
+
+#### 🔍 Auditor
+
+**Full view and export access across all features. No editing capabilities.**
+
+1. Open the app → **Dashboard** shows all metrics including financial data
+2. Browse **Recipients**, **Prizes**, **Reports** — all data is visible
+3. Click **"Export CSV"** on any report to download data for compliance review
+4. Go to **RBAC** tab → View the full permission matrix
+5. ⚠️ You **cannot** add, edit, delete, or assign anything — view and export only
+
+---
+
+#### 👁️ Viewer
+
+**Minimal read-only access.**
+
+1. Open the app → **Dashboard** shows basic counts (Total Prizes, Claimed, Unclaimed)
+2. Go to **Recipients** → Browse the list (read-only)
+3. Go to **Prizes** → Browse the prize list (read-only)
+4. Go to **Reports** → View reports (read-only, no export)
+5. ⚠️ **Financial Management**, **Teams**, **Settings**, and **RBAC** tabs are not visible
+6. ⚠️ No edit, delete, create, or export actions available
+
+---
+
+### 🎯 Quick Start Guide (Any Role)
+
+| Step | What To Do |
+|------|-----------|
+| 1 | Open PrizeFlow in your browser |
+| 2 | Click **"Get Started"** on the landing page |
+| 3 | Use the **Role Switcher** (top-right dropdown) to select your role |
+| 4 | Navigate using the **tab bar** (Dashboard, Recipients, Prizes, Reports, RBAC) |
+| 5 | Available actions depend on your role — disabled buttons show a tooltip explaining why |
+| 6 | To switch back, use the Role Switcher again or click **"← Back to Home"** |
+
+> 💡 **Tip**: If a button appears grayed out with reduced opacity, it means your current role doesn't have permission for that action. Switch to a role with higher access (like Super Administrator) to unlock it.
 
 ---
 
@@ -642,24 +753,58 @@ erDiagram
 ---
 
 
-## 🚫 What PrizeFlow Is NOT
+## 🔮 Coming Soon — Planned Features & Modules
 
-PrizeFlow is intentionally scoped. Here's what it **does not** do:
+PrizeFlow is designed to grow. The current MVP focuses on delivering a solid, reliable core for prize distribution management. The following capabilities are **planned for future releases** and will be added as the platform evolves:
 
-| Not This | Why |
-|----------|-----|
-| ❌ User authentication system | No login, no accounts — it's a single-user tool per browser |
-| ❌ Multi-tenant SaaS platform | One instance = one event = one organizer |
-| ❌ Cloud database application | All data lives in localStorage — no server dependency |
-| ❌ Real-time collaboration tool | Single-device operation by design |
-| ❌ Payment processor | Tracks prize *values* but doesn't handle money |
-| ❌ Notification system | No emails, SMS, or push — it's an event-day tool |
-| ❌ Mobile-native app | Responsive web, not a native iOS/Android application |
-| ❌ Analytics platform | No telemetry, no usage tracking, no dashboards-about-dashboards |
-| ❌ QR/barcode scanner | Manual search is fast enough for 50-500 items |
-| ❌ Enterprise HR software | Purpose-built for events, not ongoing HR workflows |
+| Feature | Current Status | Planned For | Description |
+|---------|:-------------:|:-----------:|-------------|
+| 🔐 User Authentication | 🔜 Planned | v2.0 | Full login system with user accounts, OAuth 2.0, and session management |
+| 🏢 Multi-Tenant Architecture | 🔜 Planned | v3.0 | Support for multiple organizations, each with their own isolated data |
+| ☁️ Cloud Database | 🔜 Planned | v2.0 | Server-side persistence with PostgreSQL for reliable, scalable storage |
+| 👥 Real-Time Collaboration | 🔜 Planned | v2.0 | Multiple users working simultaneously with WebSocket-powered live sync |
+| 💳 Payment Integration | 🔜 Planned | v3.0 | Direct payment processing for cash prizes and disbursements |
+| 📧 Notification System | 🔜 Planned | v2.0 | Email, SMS, and push notifications to alert recipients about their prizes |
+| 📱 Mobile-Native App | 🔜 Planned | v3.0 | Dedicated iOS and Android apps for on-the-go prize management |
+| 📈 Analytics Dashboard | 🔜 Planned | v1.1 | Usage insights, distribution trends, and performance analytics |
+| 📷 QR/Barcode Scanning | 🔜 Planned | v2.0 | Scan-to-claim for fast prize verification at large-scale events |
+| 🏗️ Enterprise HR Integration | 🔜 Planned | v3.0 | Connect with existing HR systems for employee recognition programs |
 
-> 💡 **Philosophy**: PrizeFlow does one thing exceptionally well — prize distribution management. It doesn't try to be everything to everyone.
+### Why These Aren't In the Current Release
+
+The current version delivers a **focused, high-quality MVP** that solves the core prize distribution workflow exceptionally well. Rather than shipping a bloated product with half-finished features, PrizeFlow takes an incremental approach:
+
+1. **Get the fundamentals right first** — The core workflow (register → assign → claim → report) must be rock-solid before adding complexity
+2. **Validate with real usage** — Each planned feature will be informed by actual user feedback and real-world event data
+3. **Maintain quality standards** — Every new module will meet the same engineering standards (TypeScript strict mode, property-based tests, WCAG AA accessibility)
+4. **Keep it deployable** — The system remains simple to deploy and operate at each stage of growth
+
+> 💡 **The PrizeFlow Philosophy**: Start simple, ship quality, expand deliberately. Every feature will be added when it's ready to be done *right* — not just done *fast*.
+
+### How the System Will Evolve
+
+```mermaid
+graph LR
+    A[v1.0 MVP+] --> B[v1.1 Enhanced UX]
+    B --> C[v2.0 Collaboration]
+    C --> D[v3.0 Enterprise]
+    
+    A -.-> |"Current"| A
+    
+    style A fill:#dcfce7,stroke:#16a34a
+    style B fill:#fef3c7,stroke:#d97706
+    style C fill:#e0f2fe,stroke:#0284c7
+    style D fill:#ede9fe,stroke:#7c3aed
+```
+
+| Version | Focus | Key Additions |
+|---------|-------|---------------|
+| **v1.0 (Current)** | Core MVP | Dashboard, Recipients, Prizes, Reports, RBAC Preview, Financial Tracking |
+| **v1.1** | UX Polish | Dark mode, CSV import, pagination, analytics, advanced filters |
+| **v2.0** | Collaboration | Authentication, cloud DB, real-time sync, notifications, QR scanning |
+| **v3.0** | Enterprise | Multi-tenant, payments, mobile app, HR integration, i18n |
+
+Each version builds on the previous one — nothing is thrown away, and backward compatibility is maintained throughout the evolution.
 
 ---
 
@@ -1092,13 +1237,13 @@ PrizeFlow is optimized for **50–500 items**. It will continue working with mor
 <details>
 <summary><strong>Q: Can multiple people use PrizeFlow simultaneously?</strong></summary>
 
-Not on the same browser instance. Each browser tab has its own localStorage. For multi-user scenarios, each person would need their own device and browser session. Real-time sync is on the v2.0 roadmap.
+The current version operates on a per-device basis using browser localStorage. For events with multiple claims desk operators, each person uses their own device and browser session. **Real-time multi-user collaboration with live sync is planned for v2.0** — enabling multiple team members to work from the same shared dataset simultaneously.
 </details>
 
 <details>
 <summary><strong>Q: Is the RBAC system enforced or just visual?</strong></summary>
 
-The current RBAC implementation is a **preview/demonstration** of how roles would work in a production deployment. It includes a complete permission matrix and dynamic role switcher for visualization purposes. Enforcement requires server-side authentication (planned for v2.0).
+The current RBAC implementation provides a **fully functional client-side role preview system** with a complete permission matrix (7 roles × 8 feature categories × 7 permission levels) and dynamic role switcher. The UI actively enforces permissions — hiding tabs, disabling buttons, and restricting actions based on the selected role. **Server-side authentication with persistent user accounts will be added in v2.0**, enabling true multi-user role assignment and enforcement.
 </details>
 
 <details>
