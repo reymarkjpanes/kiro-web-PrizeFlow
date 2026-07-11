@@ -250,6 +250,117 @@ journey
 
 ---
 
+### 📖 How to Use PrizeFlow — By Role
+
+Below are simple, step-by-step instructions for each role in the system. Switch roles using the **Role Switcher** dropdown in the top navigation bar.
+
+---
+
+#### 🔑 Super Administrator
+
+**Full access to all features and settings.**
+
+1. Open PrizeFlow → Click **"Get Started"** or **"Enter App"**
+2. You'll land on the **Dashboard** — view all metrics (Total Prizes, Claimed, Unclaimed, Financial Summary)
+3. Go to **Recipients** tab → Click **"Add Recipient"** → Fill in name, type, contact info → Save
+4. Go to **Prizes** tab → Click **"Add Prize"** → Fill in name, description, financial details (value, currency, sponsor) → Save
+5. In the Prizes list, click **"Assign"** on a prize → Select a recipient from the dropdown
+6. When a prize is physically handed over, click **"Claim"** → The timestamp is recorded automatically
+7. Go to **Reports** tab → View claimed/unclaimed lists → Click **"Export CSV"** to download
+8. Go to **RBAC** tab → View the full permission matrix, click on any role to see its details
+9. Use the **Role Switcher** in the top bar to preview how other roles see the application
+
+---
+
+#### 🎪 Event Administrator
+
+**Manages events, recipients, and prizes. No financial or settings access.**
+
+1. Open the app → You see the **Dashboard** with prize counts and progress
+2. Go to **Recipients** → Add, edit, or delete recipients as needed
+3. Go to **Prizes** → Create prizes, assign them to recipients, and mark them as claimed
+4. Go to **Reports** → View and export claimed/unclaimed prize lists
+5. ⚠️ You will **not** see the Financial Management section or RBAC/Settings tab
+
+---
+
+#### 💼 Finance Officer
+
+**Manages budgets, financial tracking, and reports. Read-only on operations.**
+
+1. Open the app → **Dashboard** shows financial summary (Total Budget, Distributed, Remaining)
+2. View **Recipients** and **Prizes** tabs (read-only — you can see data but not add/edit/delete)
+3. Go to **Reports** → View full reports with financial columns → **Export CSV** for accounting
+4. Financial data (prize values, currencies, sponsors, budget categories) is visible across all views
+5. ⚠️ You **cannot** add/edit/delete recipients or prizes — only view and export
+
+---
+
+#### 📦 Distribution Officer
+
+**Handles physical prize handoffs. Can edit and assign prizes and recipients.**
+
+1. Open the app → **Dashboard** shows claim progress
+2. Go to **Recipients** → You can **edit** recipient details and **assign** them to prizes
+3. Go to **Prizes** → You can **edit** prizes and **assign** recipients to them
+4. When handing over a prize, update its status (edit → change Distribution Status)
+5. Go to **Reports** → View distribution status (read-only)
+6. ⚠️ You **cannot** create or delete prizes/recipients, only edit and assign
+
+---
+
+#### 👤 Staff
+
+**Basic view-only access to core features.**
+
+1. Open the app → **Dashboard** shows summary counts
+2. Go to **Recipients** → Browse the list (read-only)
+3. Go to **Prizes** → Browse the prize list (read-only)
+4. ⚠️ You **cannot** add, edit, delete, or export anything — view only
+5. ⚠️ **Reports**, **Financial**, and **RBAC** tabs are not visible
+
+---
+
+#### 🔍 Auditor
+
+**Full view and export access across all features. No editing capabilities.**
+
+1. Open the app → **Dashboard** shows all metrics including financial data
+2. Browse **Recipients**, **Prizes**, **Reports** — all data is visible
+3. Click **"Export CSV"** on any report to download data for compliance review
+4. Go to **RBAC** tab → View the full permission matrix
+5. ⚠️ You **cannot** add, edit, delete, or assign anything — view and export only
+
+---
+
+#### 👁️ Viewer
+
+**Minimal read-only access.**
+
+1. Open the app → **Dashboard** shows basic counts (Total Prizes, Claimed, Unclaimed)
+2. Go to **Recipients** → Browse the list (read-only)
+3. Go to **Prizes** → Browse the prize list (read-only)
+4. Go to **Reports** → View reports (read-only, no export)
+5. ⚠️ **Financial Management**, **Teams**, **Settings**, and **RBAC** tabs are not visible
+6. ⚠️ No edit, delete, create, or export actions available
+
+---
+
+### 🎯 Quick Start Guide (Any Role)
+
+| Step | What To Do |
+|------|-----------|
+| 1 | Open PrizeFlow in your browser |
+| 2 | Click **"Get Started"** on the landing page |
+| 3 | Use the **Role Switcher** (top-right dropdown) to select your role |
+| 4 | Navigate using the **tab bar** (Dashboard, Recipients, Prizes, Reports, RBAC) |
+| 5 | Available actions depend on your role — disabled buttons show a tooltip explaining why |
+| 6 | To switch back, use the Role Switcher again or click **"← Back to Home"** |
+
+> 💡 **Tip**: If a button appears grayed out with reduced opacity, it means your current role doesn't have permission for that action. Switch to a role with higher access (like Super Administrator) to unlock it.
+
+---
+
 
 ## ✨ Key Features
 
