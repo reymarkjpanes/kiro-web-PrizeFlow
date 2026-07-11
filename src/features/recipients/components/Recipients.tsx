@@ -1,22 +1,26 @@
 import { useState, useCallback, useRef } from 'react';
 import { Button, Badge, Dialog } from '@/shared/components';
-import type { Recipient } from '@/shared/types';
+import type { Recipient, Prize, RecipientFormData } from '@/shared/types';
 import { RecipientForm } from './RecipientForm';
 import { RecipientList } from './RecipientList';
 
 export interface RecipientsProps {
   recipients: Recipient[];
-  addRecipient: (name: string, contact: string) => void;
+  prizes: Prize[];
+  addRecipient: (data: RecipientFormData) => void;
   updateRecipient: (id: string, updates: Partial<Omit<Recipient, 'id'>>) => void;
   deleteRecipient: (id: string) => void;
+  duplicateRecipient: (id: string) => Recipient | null;
   clearRecipientFromPrizes: (recipientId: string) => void;
 }
 
 function Recipients({
   recipients,
+  prizes,
   addRecipient,
   updateRecipient,
   deleteRecipient,
+  duplicateRecipient,
   clearRecipientFromPrizes,
 }: RecipientsProps) {
   const [showForm, setShowForm] = useState(false);
@@ -32,11 +36,20 @@ function Recipients({
   }, []);
 
   const handleFormSubmit = useCallback(
-    (name: string, contact: string) => {
+    (data: RecipientFormData) => {
       if (editingRecipient) {
-        updateRecipient(editingRecipient.id, { name, contact });
+        updateRecipient(editingRecipient.id, {
+          type: data.type,
+          displayName: data.displayName,
+          contactPerson: data.contactPerson,
+          contactInfo: data.contactInfo,
+          members: data.members,
+          memberCount: data.members.length,
+          notes: data.notes,
+          customLabel: data.customLabel,
+        });
       } else {
-        addRecipient(name, contact);
+        addRecipient(data);
       }
       setShowForm(false);
       setEditingRecipient(null);
@@ -70,6 +83,10 @@ function Recipients({
     setDeletingRecipient(null);
   }, []);
 
+  const handleDuplicate = useCallback((recipientId: string) => {
+    duplicateRecipient(recipientId);
+  }, [duplicateRecipient]);
+
   return (
     <section className="space-y-6">
       {/* Header */}
@@ -94,11 +111,7 @@ function Recipients({
         <RecipientForm
           onSubmit={handleFormSubmit}
           onCancel={handleFormCancel}
-          initialData={
-            editingRecipient
-              ? { name: editingRecipient.name, contact: editingRecipient.contact }
-              : undefined
-          }
+          initialData={editingRecipient ?? undefined}
           triggerRef={addButtonRef}
         />
       )}
@@ -106,8 +119,10 @@ function Recipients({
       {/* List */}
       <RecipientList
         recipients={recipients}
+        prizes={prizes}
         onEdit={handleEdit}
         onDelete={handleDeleteRequest}
+        onDuplicate={handleDuplicate}
         onAdd={handleAdd}
       />
 
@@ -121,7 +136,7 @@ function Recipients({
         <p className="text-body-sm text-neutral-600 mb-6">
           Are you sure you want to delete{' '}
           <span className="font-medium text-neutral-900">
-            {deletingRecipient?.name}
+            {deletingRecipient?.displayName}
           </span>
           ? This will also clear their prize assignments.
         </p>

@@ -11,7 +11,7 @@ import { ErrorBoundary } from './ErrorBoundary';
 function App() {
   const [activeTab, setActiveTab] = useState<TabId>('dashboard');
 
-  const { recipients, addRecipient, updateRecipient, deleteRecipient, error: recipientError } = useRecipients();
+  const { recipients, addRecipient, updateRecipient, deleteRecipient, duplicateRecipient, error: recipientError } = useRecipients();
   const {
     prizes,
     addPrize,
@@ -59,9 +59,11 @@ function App() {
             {activeTab === 'recipients' && (
               <Recipients
                 recipients={recipients}
+                prizes={prizes}
                 addRecipient={addRecipient}
                 updateRecipient={updateRecipient}
                 deleteRecipient={deleteRecipient}
+                duplicateRecipient={duplicateRecipient}
                 clearRecipientFromPrizes={clearRecipientFromPrizes}
               />
             )}
