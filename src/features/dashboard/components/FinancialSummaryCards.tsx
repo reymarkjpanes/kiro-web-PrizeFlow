@@ -22,8 +22,6 @@ function FinancialSummaryCards({ prizes }: FinancialSummaryCardsProps) {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-body-sm font-medium text-neutral-700">Financial Summary</h2>
-
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
         {/* Total Prize Budget */}
         <Card className="border-l-4 border-l-primary-500">

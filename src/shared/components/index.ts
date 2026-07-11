@@ -38,3 +38,7 @@ export { RoleSwitcher } from './RoleSwitcher';
 
 export { AnimatedList } from './AnimatedList';
 export type { AnimatedListProps } from './AnimatedList';
+
+
+export { SectionHeading } from './SectionHeading';
+export type { SectionHeadingProps } from './SectionHeading';

@@ -1,9 +1,10 @@
 import type { Recipient, Prize } from '@/shared/types';
 import { TYPE_BADGE_CONFIG } from '@/shared/utils';
-import { EmptyState } from '@/shared/components';
+import { EmptyState, Card, SectionHeading } from '@/shared/components';
 import { useDashboardStats } from '../hooks/useDashboardStats';
 import { DashboardCard } from './DashboardCard';
 import { FinancialSummaryCards } from './FinancialSummaryCards';
+import { ClaimProgressBar } from './ClaimProgressBar';
 
 export interface DashboardProps {
   recipients: Recipient[];
@@ -17,8 +18,8 @@ function Dashboard({ recipients, prizes }: DashboardProps) {
   // Show empty state when there's no data at all
   if (recipients.length === 0 && prizes.length === 0) {
     return (
-      <section className="space-y-6">
-        <h1 className="text-h2 text-neutral-900">Dashboard</h1>
+      <section className="space-y-10">
+        <h1 className="text-h1 text-neutral-900">Dashboard</h1>
         <EmptyState
           heading="Welcome to PrizeFlow"
           description="Your dashboard will populate automatically once you add prizes and recipients. Head to the Prizes or Recipients tab to get started."
@@ -33,60 +34,60 @@ function Dashboard({ recipients, prizes }: DashboardProps) {
   }
 
   return (
-    <section className="space-y-6">
-      <h1 className="text-h2 text-neutral-900">Dashboard</h1>
+    <section className="space-y-10">
+      {/* Page Title */}
+      <h1 className="text-h1 text-neutral-900">Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-        <DashboardCard label="Total Recipients" value={totalRecipients} />
-        <DashboardCard label="Total Prizes" value={totalPrizes} />
-        <DashboardCard label="Claimed" value={claimedCount} variant="success" />
-        <DashboardCard label="Unclaimed" value={unclaimedCount} variant="warning" />
+      {/* Zone 1: Primary KPIs + Claim Progress */}
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <DashboardCard label="Total Prizes" value={totalPrizes} size="large" />
+          <DashboardCard label="Claimed" value={claimedCount} variant="success" size="large" />
+          <DashboardCard label="Unclaimed" value={unclaimedCount} variant="warning" size="large" />
+        </div>
+
+        {totalPrizes > 0 && (
+          <ClaimProgressBar
+            claimed={claimedCount}
+            unclaimed={unclaimedCount}
+            claimRate={claimRate}
+          />
+        )}
       </div>
 
-      {/* Financial Summary Cards */}
-      <FinancialSummaryCards prizes={prizes} />
+      {/* Zone 2: Financial Overview */}
+      <div className="space-y-4">
+        <SectionHeading>Financial Summary</SectionHeading>
+        <FinancialSummaryCards prizes={prizes} />
+      </div>
 
-      {/* Recipients by Type breakdown */}
-      {typeBreakdown.length > 0 && (
-        <div className="space-y-2">
-          <h2 className="text-body-sm font-medium text-neutral-700">Recipients by Type</h2>
-          <div className="flex flex-wrap gap-2">
-            {typeBreakdown.map(({ type, count }) => {
-              const config = TYPE_BADGE_CONFIG[type];
-              return (
-                <span
-                  key={type}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-caption font-medium ring-1 ring-inset ${config.classes}`}
-                >
-                  {config.label}
-                  <span className="font-semibold">{count}</span>
-                </span>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* Progress indicator */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <span className="text-body-sm text-neutral-600">Claim Progress</span>
-          <span className="text-body-sm font-medium text-neutral-900">
-            {Math.round(claimRate)}%
-          </span>
-        </div>
-        <div
-          className="w-full h-2 bg-neutral-200 rounded-full overflow-hidden"
-          role="progressbar"
-          aria-valuenow={Math.round(claimRate)}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-label="Prize claim completion"
-        >
-          <div
-            className="h-full bg-primary-500 rounded-full transition-all duration-slow"
-            style={{ width: `${claimRate}%` }}
-          />
+      {/* Zone 3: Secondary Data */}
+      <div className="space-y-4">
+        <SectionHeading>Overview</SectionHeading>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <DashboardCard label="Total Recipients" value={totalRecipients} />
+          
+          {typeBreakdown.length > 0 && (
+            <Card className="p-4">
+              <div className="space-y-2">
+                <span className="text-body-sm font-medium text-neutral-600">Recipients by Type</span>
+                <div className="flex flex-wrap gap-2">
+                  {typeBreakdown.map(({ type, count }) => {
+                    const config = TYPE_BADGE_CONFIG[type];
+                    return (
+                      <span
+                        key={type}
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-caption font-medium ring-1 ring-inset ${config.classes}`}
+                      >
+                        {config.label}
+                        <span className="font-semibold">{count}</span>
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            </Card>
+          )}
         </div>
       </div>
     </section>
