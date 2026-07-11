@@ -43,7 +43,7 @@
 - [Architecture Overview](#-architecture-overview)
 - [Product Principles](#-product-principles)
 - [Functional Scope](#-functional-scope)
-- [Coming Soon — Planned Features](#-coming-soon--planned-features--modules)
+- [Coming Soon — Planned Features & Modules](#-coming-soon--planned-features--modules)
 - [Example Scenarios](#-example-scenarios)
 - [Screenshots](#-screenshots)
 - [Why Choose PrizeFlow](#-why-choose-prizeflow)
@@ -1126,13 +1126,13 @@ PrizeFlow is optimized for **50–500 items**. It will continue working with mor
 <details>
 <summary><strong>Q: Can multiple people use PrizeFlow simultaneously?</strong></summary>
 
-Not on the same browser instance. Each browser tab has its own localStorage. For multi-user scenarios, each person would need their own device and browser session. Real-time sync is on the v2.0 roadmap.
+The current version operates on a per-device basis using browser localStorage. For events with multiple claims desk operators, each person uses their own device and browser session. **Real-time multi-user collaboration with live sync is planned for v2.0** — enabling multiple team members to work from the same shared dataset simultaneously.
 </details>
 
 <details>
 <summary><strong>Q: Is the RBAC system enforced or just visual?</strong></summary>
 
-The current RBAC implementation is a **preview/demonstration** of how roles would work in a production deployment. It includes a complete permission matrix and dynamic role switcher for visualization purposes. Enforcement requires server-side authentication (planned for v2.0).
+The current RBAC implementation provides a **fully functional client-side role preview system** with a complete permission matrix (7 roles × 8 feature categories × 7 permission levels) and dynamic role switcher. The UI actively enforces permissions — hiding tabs, disabling buttons, and restricting actions based on the selected role. **Server-side authentication with persistent user accounts will be added in v2.0**, enabling true multi-user role assignment and enforcement.
 </details>
 
 <details>
