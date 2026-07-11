@@ -43,7 +43,7 @@
 - [Architecture Overview](#-architecture-overview)
 - [Product Principles](#-product-principles)
 - [Functional Scope](#-functional-scope)
-- [What PrizeFlow Is NOT](#-what-prizeflow-is-not)
+- [Coming Soon — Planned Features](#-coming-soon--planned-features--modules)
 - [Example Scenarios](#-example-scenarios)
 - [Screenshots](#-screenshots)
 - [Why Choose PrizeFlow](#-why-choose-prizeflow)
@@ -642,24 +642,58 @@ erDiagram
 ---
 
 
-## 🚫 What PrizeFlow Is NOT
+## 🔮 Coming Soon — Planned Features & Modules
 
-PrizeFlow is intentionally scoped. Here's what it **does not** do:
+PrizeFlow is designed to grow. The current MVP focuses on delivering a solid, reliable core for prize distribution management. The following capabilities are **planned for future releases** and will be added as the platform evolves:
 
-| Not This | Why |
-|----------|-----|
-| ❌ User authentication system | No login, no accounts — it's a single-user tool per browser |
-| ❌ Multi-tenant SaaS platform | One instance = one event = one organizer |
-| ❌ Cloud database application | All data lives in localStorage — no server dependency |
-| ❌ Real-time collaboration tool | Single-device operation by design |
-| ❌ Payment processor | Tracks prize *values* but doesn't handle money |
-| ❌ Notification system | No emails, SMS, or push — it's an event-day tool |
-| ❌ Mobile-native app | Responsive web, not a native iOS/Android application |
-| ❌ Analytics platform | No telemetry, no usage tracking, no dashboards-about-dashboards |
-| ❌ QR/barcode scanner | Manual search is fast enough for 50-500 items |
-| ❌ Enterprise HR software | Purpose-built for events, not ongoing HR workflows |
+| Feature | Current Status | Planned For | Description |
+|---------|:-------------:|:-----------:|-------------|
+| 🔐 User Authentication | 🔜 Planned | v2.0 | Full login system with user accounts, OAuth 2.0, and session management |
+| 🏢 Multi-Tenant Architecture | 🔜 Planned | v3.0 | Support for multiple organizations, each with their own isolated data |
+| ☁️ Cloud Database | 🔜 Planned | v2.0 | Server-side persistence with PostgreSQL for reliable, scalable storage |
+| 👥 Real-Time Collaboration | 🔜 Planned | v2.0 | Multiple users working simultaneously with WebSocket-powered live sync |
+| 💳 Payment Integration | 🔜 Planned | v3.0 | Direct payment processing for cash prizes and disbursements |
+| 📧 Notification System | 🔜 Planned | v2.0 | Email, SMS, and push notifications to alert recipients about their prizes |
+| 📱 Mobile-Native App | 🔜 Planned | v3.0 | Dedicated iOS and Android apps for on-the-go prize management |
+| 📈 Analytics Dashboard | 🔜 Planned | v1.1 | Usage insights, distribution trends, and performance analytics |
+| 📷 QR/Barcode Scanning | 🔜 Planned | v2.0 | Scan-to-claim for fast prize verification at large-scale events |
+| 🏗️ Enterprise HR Integration | 🔜 Planned | v3.0 | Connect with existing HR systems for employee recognition programs |
 
-> 💡 **Philosophy**: PrizeFlow does one thing exceptionally well — prize distribution management. It doesn't try to be everything to everyone.
+### Why These Aren't In the Current Release
+
+The current version delivers a **focused, high-quality MVP** that solves the core prize distribution workflow exceptionally well. Rather than shipping a bloated product with half-finished features, PrizeFlow takes an incremental approach:
+
+1. **Get the fundamentals right first** — The core workflow (register → assign → claim → report) must be rock-solid before adding complexity
+2. **Validate with real usage** — Each planned feature will be informed by actual user feedback and real-world event data
+3. **Maintain quality standards** — Every new module will meet the same engineering standards (TypeScript strict mode, property-based tests, WCAG AA accessibility)
+4. **Keep it deployable** — The system remains simple to deploy and operate at each stage of growth
+
+> 💡 **The PrizeFlow Philosophy**: Start simple, ship quality, expand deliberately. Every feature will be added when it's ready to be done *right* — not just done *fast*.
+
+### How the System Will Evolve
+
+```mermaid
+graph LR
+    A[v1.0 MVP+] --> B[v1.1 Enhanced UX]
+    B --> C[v2.0 Collaboration]
+    C --> D[v3.0 Enterprise]
+    
+    A -.-> |"Current"| A
+    
+    style A fill:#dcfce7,stroke:#16a34a
+    style B fill:#fef3c7,stroke:#d97706
+    style C fill:#e0f2fe,stroke:#0284c7
+    style D fill:#ede9fe,stroke:#7c3aed
+```
+
+| Version | Focus | Key Additions |
+|---------|-------|---------------|
+| **v1.0 (Current)** | Core MVP | Dashboard, Recipients, Prizes, Reports, RBAC Preview, Financial Tracking |
+| **v1.1** | UX Polish | Dark mode, CSV import, pagination, analytics, advanced filters |
+| **v2.0** | Collaboration | Authentication, cloud DB, real-time sync, notifications, QR scanning |
+| **v3.0** | Enterprise | Multi-tenant, payments, mobile app, HR integration, i18n |
+
+Each version builds on the previous one — nothing is thrown away, and backward compatibility is maintained throughout the evolution.
 
 ---
 
