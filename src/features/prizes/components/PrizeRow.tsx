@@ -1,6 +1,7 @@
-import React, { useCallback, useId } from 'react';
+import React, { useCallback, useId, useMemo } from 'react';
 import { Button, Badge } from '@/shared/components';
 import type { Prize, Recipient } from '@/shared/types';
+import { groupRecipientsByType, TYPE_BADGE_CONFIG } from '@/shared/utils';
 
 export interface PrizeRowProps {
   prize: Prize;
@@ -24,6 +25,11 @@ function PrizeRow({
   onUnclaim,
 }: PrizeRowProps) {
   const selectId = useId();
+
+  const groupedRecipients = useMemo(
+    () => groupRecipientsByType(recipients),
+    [recipients]
+  );
 
   const handleAssignChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -75,7 +81,7 @@ function PrizeRow({
 
       {/* Actions */}
       <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-fast">
-        {/* Recipient assignment dropdown */}
+        {/* Recipient assignment dropdown grouped by type */}
         <div className="flex items-center gap-1">
           <label htmlFor={selectId} className="sr-only">
             Assign recipient to {prize.name}
@@ -88,10 +94,14 @@ function PrizeRow({
             aria-label={`Assign recipient to ${prize.name}`}
           >
             <option value="">Unassigned</option>
-            {recipients.map(r => (
-              <option key={r.id} value={r.id}>
-                {r.name}
-              </option>
+            {Array.from(groupedRecipients.entries()).map(([type, typeRecipients]) => (
+              <optgroup key={type} label={TYPE_BADGE_CONFIG[type].label}>
+                {typeRecipients.map(r => (
+                  <option key={r.id} value={r.id}>
+                    {r.displayName}
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </div>

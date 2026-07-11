@@ -1,9 +1,16 @@
 import { Table, EmptyState } from '@/shared/components';
+import { TYPE_BADGE_CONFIG } from '@/shared/utils';
 import type { EnrichedPrize } from '../hooks/useReportData';
 
 export interface ReportTableProps {
   filteredPrizes: EnrichedPrize[];
   activeTab: 'claimed' | 'unclaimed';
+}
+
+function capitalizeType(type: string): string {
+  if (!type) return '—';
+  const config = TYPE_BADGE_CONFIG[type as keyof typeof TYPE_BADGE_CONFIG];
+  return config ? config.label : type.charAt(0).toUpperCase() + type.slice(1);
 }
 
 function ReportTable({ filteredPrizes, activeTab }: ReportTableProps) {
@@ -26,6 +33,7 @@ function ReportTable({ filteredPrizes, activeTab }: ReportTableProps) {
       <Table.Head>
         <Table.Row>
           <Table.HeaderCell>Prize Name</Table.HeaderCell>
+          <Table.HeaderCell>Recipient Type</Table.HeaderCell>
           <Table.HeaderCell>Recipient</Table.HeaderCell>
           {activeTab === 'claimed' && (
             <Table.HeaderCell>Claim Date</Table.HeaderCell>
@@ -37,6 +45,9 @@ function ReportTable({ filteredPrizes, activeTab }: ReportTableProps) {
           <Table.Row key={prize.id}>
             <Table.Cell className="font-medium text-neutral-900">
               {prize.name}
+            </Table.Cell>
+            <Table.Cell>
+              {capitalizeType(prize.recipientType)}
             </Table.Cell>
             <Table.Cell>
               {prize.recipientName || 'Unassigned'}

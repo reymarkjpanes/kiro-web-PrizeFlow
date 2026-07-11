@@ -5,3 +5,5 @@ export { useRecipients } from './useRecipients';
 export type { UseRecipientsReturn } from './useRecipients';
 export { usePrizes } from './usePrizes';
 export type { UsePrizesReturn } from './usePrizes';
+export { useRecipientFilter } from './useRecipientFilter';
+export type { UseRecipientFilterReturn } from './useRecipientFilter';

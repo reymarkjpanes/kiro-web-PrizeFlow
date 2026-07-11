@@ -21,3 +21,12 @@ export type { DialogProps } from './Dialog';
 
 export { Navigation } from './Navigation';
 export type { NavigationProps } from './Navigation';
+
+export { Select } from './Select';
+export type { SelectProps } from './Select';
+
+export { TagInput } from './TagInput';
+export type { TagInputProps } from './TagInput';
+
+export { FilterPills } from './FilterPills';
+export type { FilterPillsProps, FilterPillOption } from './FilterPills';

@@ -30,10 +30,10 @@ function PrizeList({
     setSearch(e.target.value);
   }, []);
 
-  // Build a map of recipient names for efficient lookup
+  // Build a map of recipient displayNames for efficient lookup
   const recipientMap = useMemo(() => {
     const map = new Map<string, string>();
-    recipients.forEach(r => map.set(r.id, r.name));
+    recipients.forEach(r => map.set(r.id, r.displayName));
     return map;
   }, [recipients]);
 

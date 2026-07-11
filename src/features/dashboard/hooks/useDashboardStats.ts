@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import type { Recipient, Prize } from '@/shared/types';
+import type { Recipient, Prize, RecipientType } from '@/shared/types';
+import { computeTypeBreakdown } from '@/shared/utils';
 
 export interface DashboardStats {
   totalRecipients: number;
@@ -7,6 +8,7 @@ export interface DashboardStats {
   claimedCount: number;
   unclaimedCount: number;
   claimRate: number;
+  typeBreakdown: { type: RecipientType; count: number }[];
 }
 
 /**
@@ -19,7 +21,8 @@ export function useDashboardStats(recipients: Recipient[], prizes: Prize[]): Das
     const claimedCount = prizes.filter(p => p.claimed).length;
     const unclaimedCount = totalPrizes - claimedCount;
     const claimRate = totalPrizes > 0 ? (claimedCount / totalPrizes) * 100 : 0;
+    const typeBreakdown = computeTypeBreakdown(recipients);
 
-    return { totalRecipients, totalPrizes, claimedCount, unclaimedCount, claimRate };
+    return { totalRecipients, totalPrizes, claimedCount, unclaimedCount, claimRate, typeBreakdown };
   }, [recipients, prizes]);
 }

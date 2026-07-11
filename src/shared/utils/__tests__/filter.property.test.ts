@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { describe, test, expect } from 'vitest';
 import fc from 'fast-check';
-import type { Recipient } from '@/shared/types';
+import type { Recipient, RecipientType } from '@/shared/types';
+import { filterRecipients } from '@/shared/utils';
 
 // Feature: production-quality-mvp, Property 7: Filter Subset Correctness
 
@@ -16,22 +17,21 @@ import type { Recipient } from '@/shared/types';
  * **Validates: Requirements 7.4**
  */
 
-// Pure filter function matching the implementation in RecipientList
-function filterRecipients(recipients: Recipient[], query: string): Recipient[] {
-  const normalizedQuery = query.toLowerCase().trim();
-  if (!normalizedQuery) return recipients;
-  return recipients.filter(
-    r =>
-      r.name.toLowerCase().includes(normalizedQuery) ||
-      r.contact.toLowerCase().includes(normalizedQuery)
-  );
-}
-
 describe('Property 7: Filter Subset Correctness', () => {
-  const recipientArb = fc.record({
+  const recipientTypeArb: fc.Arbitrary<RecipientType> = fc.constantFrom(
+    'individual', 'team', 'class', 'department', 'organization', 'club', 'other'
+  );
+
+  const recipientArb: fc.Arbitrary<Recipient> = fc.record({
     id: fc.string({ minLength: 1, maxLength: 20 }),
-    name: fc.string({ minLength: 1, maxLength: 50 }),
-    contact: fc.string({ maxLength: 50 }),
+    type: recipientTypeArb,
+    displayName: fc.string({ minLength: 1, maxLength: 50 }),
+    contactPerson: fc.string({ maxLength: 50 }),
+    contactInfo: fc.string({ maxLength: 50 }),
+    members: fc.array(fc.string({ maxLength: 30 }), { maxLength: 5 }),
+    memberCount: fc.nat({ max: 50 }),
+    notes: fc.string({ maxLength: 50 }),
+    customLabel: fc.string({ maxLength: 20 }),
   });
 
   test('filtered result is always a subset of the original list', () => {
@@ -40,7 +40,7 @@ describe('Property 7: Filter Subset Correctness', () => {
         fc.array(recipientArb, { maxLength: 50 }),
         fc.string({ minLength: 1, maxLength: 20 }),
         (recipients, query) => {
-          const filtered = filterRecipients(recipients, query);
+          const filtered = filterRecipients(recipients, [], query);
 
           // Every filtered item must exist in the original list
           for (const item of filtered) {
@@ -61,15 +61,16 @@ describe('Property 7: Filter Subset Correctness', () => {
         fc.array(recipientArb, { maxLength: 50 }),
         fc.string({ minLength: 1, maxLength: 20 }),
         (recipients, query) => {
-          const filtered = filterRecipients(recipients, query);
+          const filtered = filterRecipients(recipients, [], query);
           const normalizedQuery = query.toLowerCase().trim();
 
           if (!normalizedQuery) return; // Skip empty queries
 
           for (const item of filtered) {
-            const matchesName = item.name.toLowerCase().includes(normalizedQuery);
-            const matchesContact = item.contact.toLowerCase().includes(normalizedQuery);
-            expect(matchesName || matchesContact).toBe(true);
+            const matchesDisplayName = item.displayName.toLowerCase().includes(normalizedQuery);
+            const matchesContactPerson = item.contactPerson.toLowerCase().includes(normalizedQuery);
+            const matchesMembers = item.members.some(m => m.toLowerCase().includes(normalizedQuery));
+            expect(matchesDisplayName || matchesContactPerson || matchesMembers).toBe(true);
           }
         }
       ),
@@ -83,7 +84,7 @@ describe('Property 7: Filter Subset Correctness', () => {
         fc.array(recipientArb, { maxLength: 50 }),
         fc.string({ minLength: 1, maxLength: 20 }),
         (recipients, query) => {
-          const filtered = filterRecipients(recipients, query);
+          const filtered = filterRecipients(recipients, [], query);
           const normalizedQuery = query.toLowerCase().trim();
 
           if (!normalizedQuery) return;
@@ -91,8 +92,9 @@ describe('Property 7: Filter Subset Correctness', () => {
           // Every item in original that matches should be in filtered
           for (const item of recipients) {
             const matches =
-              item.name.toLowerCase().includes(normalizedQuery) ||
-              item.contact.toLowerCase().includes(normalizedQuery);
+              item.displayName.toLowerCase().includes(normalizedQuery) ||
+              item.contactPerson.toLowerCase().includes(normalizedQuery) ||
+              item.members.some(m => m.toLowerCase().includes(normalizedQuery));
 
             if (matches) {
               expect(filtered).toContainEqual(item);
@@ -110,7 +112,7 @@ describe('Property 7: Filter Subset Correctness', () => {
         fc.array(recipientArb, { maxLength: 50 }),
         fc.constantFrom('', '  ', '\t'),
         (recipients, query) => {
-          const filtered = filterRecipients(recipients, query);
+          const filtered = filterRecipients(recipients, [], query);
           expect(filtered).toEqual(recipients);
         }
       ),
