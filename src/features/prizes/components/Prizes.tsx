@@ -1,7 +1,9 @@
 import { useState, useCallback, useRef } from 'react';
 import { Button, Badge, Dialog } from '@/shared/components';
 import type { Prize, Recipient } from '@/shared/types';
+import { useRBAC } from '@/shared/hooks';
 import { PrizeForm } from './PrizeForm';
+import type { PrizeFormData } from './PrizeForm';
 import { PrizeList } from './PrizeList';
 
 export interface PrizesProps {
@@ -31,6 +33,11 @@ function Prizes({
   const [editingPrize, setEditingPrize] = useState<Prize | null>(null);
   const [deletingPrize, setDeletingPrize] = useState<Prize | null>(null);
 
+  const { isActionEnabled } = useRBAC();
+  const canCreate = isActionEnabled('Prize Management', 'Create');
+  const canEdit = isActionEnabled('Prize Management', 'Edit');
+  const canDelete = isActionEnabled('Prize Management', 'Delete');
+
   const addButtonRef = useRef<HTMLButtonElement>(null);
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -40,11 +47,49 @@ function Prizes({
   }, []);
 
   const handleFormSubmit = useCallback(
-    (name: string, description: string) => {
+    (data: PrizeFormData) => {
       if (editingPrize) {
-        updatePrize(editingPrize.id, { name, description });
+        updatePrize(editingPrize.id, {
+          name: data.name,
+          description: data.description,
+          prizeValue: data.prizeValue,
+          currency: data.currency,
+          prizeType: data.prizeType,
+          fundingSource: data.fundingSource,
+          sponsor: data.sponsor,
+          budgetCategory: data.budgetCategory,
+          distributionStatus: data.distributionStatus,
+        });
       } else {
-        addPrize(name, description);
+        // For new prizes, first create with basic fields (which sets defaults)
+        addPrize(data.name, data.description);
+        // Then immediately update with financial data if any non-default values provided
+        const hasFinancialData =
+          data.prizeValue !== null ||
+          data.currency !== 'USD' ||
+          data.prizeType !== 'physical' ||
+          data.fundingSource !== null ||
+          data.sponsor !== null ||
+          data.budgetCategory !== null;
+
+        if (hasFinancialData) {
+          // Find the newly created prize (last one in the list with matching name)
+          // Use a microtask to ensure state has settled from addPrize
+          queueMicrotask(() => {
+            const currentPrizes = JSON.parse(localStorage.getItem('prizeflow_prizes') || '[]');
+            const newPrize = currentPrizes[currentPrizes.length - 1];
+            if (newPrize && newPrize.name === data.name) {
+              updatePrize(newPrize.id, {
+                prizeValue: data.prizeValue,
+                currency: data.currency,
+                prizeType: data.prizeType,
+                fundingSource: data.fundingSource,
+                sponsor: data.sponsor,
+                budgetCategory: data.budgetCategory,
+              });
+            }
+          });
+        }
       }
       setShowForm(false);
       setEditingPrize(null);
@@ -116,6 +161,9 @@ function Prizes({
           size="small"
           onClick={handleAdd}
           aria-label="Add Prize"
+          disabled={!canCreate}
+          aria-disabled={!canCreate || undefined}
+          title={!canCreate ? 'Action unavailable for current role' : undefined}
         >
           Add Prize
         </Button>
@@ -126,11 +174,8 @@ function Prizes({
         <PrizeForm
           onSubmit={handleFormSubmit}
           onCancel={handleFormCancel}
-          initialData={
-            editingPrize
-              ? { name: editingPrize.name, description: editingPrize.description }
-              : undefined
-          }
+          initialData={editingPrize ?? undefined}
+          isEditMode={!!editingPrize}
           triggerRef={addButtonRef}
         />
       )}
@@ -145,6 +190,8 @@ function Prizes({
         onClaim={handleClaim}
         onUnclaim={handleUnclaim}
         onAdd={handleAdd}
+        canEdit={canEdit}
+        canDelete={canDelete}
       />
 
       {/* Delete confirmation dialog */}

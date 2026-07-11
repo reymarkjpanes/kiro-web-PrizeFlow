@@ -9,9 +9,11 @@ export interface RecipientRowProps {
   onEdit: (recipient: Recipient) => void;
   onDelete: (recipient: Recipient) => void;
   onDuplicate: (recipientId: string) => void;
+  canEdit?: boolean;
+  canDelete?: boolean;
 }
 
-function RecipientRow({ recipient, prizes, onEdit, onDelete, onDuplicate }: RecipientRowProps) {
+function RecipientRow({ recipient, prizes, onEdit, onDelete, onDuplicate, canEdit = true, canDelete = true }: RecipientRowProps) {
   const badgeConfig = TYPE_BADGE_CONFIG[recipient.type];
   const { assigned, claimed } = computeQuickStats(recipient.id, prizes);
   const quickStatText = formatQuickStat(assigned, claimed);
@@ -64,6 +66,9 @@ function RecipientRow({ recipient, prizes, onEdit, onDelete, onDuplicate }: Reci
           size="small"
           onClick={handleEdit}
           aria-label={`Edit ${recipient.displayName}`}
+          disabled={!canEdit}
+          aria-disabled={!canEdit || undefined}
+          title={!canEdit ? 'Action unavailable for current role' : undefined}
         >
           Edit
         </Button>
@@ -72,6 +77,9 @@ function RecipientRow({ recipient, prizes, onEdit, onDelete, onDuplicate }: Reci
           size="small"
           onClick={handleDelete}
           aria-label={`Delete ${recipient.displayName}`}
+          disabled={!canDelete}
+          aria-disabled={!canDelete || undefined}
+          title={!canDelete ? 'Action unavailable for current role' : undefined}
         >
           Delete
         </Button>

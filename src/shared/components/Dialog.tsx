@@ -43,7 +43,7 @@ function Dialog({ open, onClose, title, children, triggerRef }: DialogProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-neutral-900/50 animate-fade-in"
+        className="absolute inset-0 bg-neutral-900/50 dialog-backdrop-enter"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -54,7 +54,7 @@ function Dialog({ open, onClose, title, children, triggerRef }: DialogProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="dialog-title"
-        className="relative z-10 bg-white rounded-xl shadow-lg border border-neutral-200 p-6 w-full max-w-md mx-4 animate-fade-in"
+        className="relative z-10 bg-white rounded-xl shadow-lg border border-neutral-200 p-6 w-full max-w-md mx-4 dialog-enter"
       >
         <h2
           id="dialog-title"

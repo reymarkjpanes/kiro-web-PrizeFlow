@@ -46,6 +46,13 @@ describe('Property 4: Cascade Delete Consistency', () => {
     ),
     claimed: fc.boolean(),
     claimDate: claimDateArb,
+    prizeValue: fc.oneof(fc.constant(null), fc.double({ min: 0.01, max: 999999999.99, noNaN: true })),
+    currency: fc.constantFrom('USD' as const, 'EUR' as const, 'GBP' as const, 'JPY' as const, 'CAD' as const, 'AUD' as const, 'CHF' as const, 'INR' as const),
+    prizeType: fc.constantFrom('cash' as const, 'physical' as const),
+    fundingSource: fc.oneof(fc.constant(null), fc.string({ maxLength: 100 })),
+    sponsor: fc.oneof(fc.constant(null), fc.string({ maxLength: 100 })),
+    budgetCategory: fc.oneof(fc.constant(null), fc.string({ maxLength: 50 })),
+    distributionStatus: fc.constantFrom('pending' as const, 'in_progress' as const, 'distributed' as const, 'returned' as const),
   });
 
   test('after cascade delete, no prize references the deleted recipient', () => {
