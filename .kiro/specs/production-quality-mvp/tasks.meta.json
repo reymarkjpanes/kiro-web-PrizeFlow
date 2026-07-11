@@ -1,0 +1,25 @@
+{
+  "pbtResults": {
+    "3.4 Write property test for useLocalStorage (Property 1: Storage Integrity)": {
+      "status": "passed",
+      "lastRunTimestamp": 1783729307391
+    },
+    "5.4 Write property test for cascade delete (Property 4: Cascade Delete Consistency)": {
+      "status": "passed",
+      "lastRunTimestamp": 1783729308386
+    },
+    "6.3 Write property test for CSV round-trip (Property 2: CSV Round-Trip)": {
+      "status": "passed",
+      "lastRunTimestamp": 1783729309354
+    },
+    "6.4 Write property test for CSV field isolation (Property 3: CSV Field Isolation)": {
+      "status": "passed",
+      "lastRunTimestamp": 1783729310249
+    },
+    "9.5 Write property test for recipient filter (Property 7: Filter Subset Correctness)": {
+      "status": "passed",
+      "lastRunTimestamp": 1783729311376
+    }
+  },
+  "executionHistory": {}
+}

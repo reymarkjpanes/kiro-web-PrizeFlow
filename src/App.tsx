@@ -1,75 +1,88 @@
-import { useState, useEffect, useCallback } from 'react';
-import { TabId, Recipient, Prize } from './types';
-import { getRecipients, saveRecipients, getPrizes, savePrizes } from './utils/storage';
-import Navigation from './components/Navigation';
-import Dashboard from './pages/Dashboard';
-import Recipients from './pages/Recipients';
-import Prizes from './pages/Prizes';
-import Reports from './pages/Reports';
+import { useState, useCallback } from 'react';
+import { Navigation } from '@/shared/components';
+import { useRecipients, usePrizes } from '@/shared/hooks';
+import type { TabId } from '@/shared/types';
+import { Dashboard } from '@/features/dashboard';
+import { Recipients } from '@/features/recipients';
+import { Prizes } from '@/features/prizes';
+import { Reports } from '@/features/reports';
+import { ErrorBoundary } from './ErrorBoundary';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabId>('dashboard');
-  const [recipients, setRecipients] = useState<Recipient[]>([]);
-  const [prizes, setPrizes] = useState<Prize[]>([]);
 
-  // Load data from localStorage on mount
-  useEffect(() => {
-    setRecipients(getRecipients());
-    setPrizes(getPrizes());
+  const { recipients, addRecipient, updateRecipient, deleteRecipient, error: recipientError } = useRecipients();
+  const {
+    prizes,
+    addPrize,
+    updatePrize,
+    deletePrize,
+    assignRecipient,
+    unassignRecipient,
+    claimPrize,
+    unclaimPrize,
+    clearRecipientFromPrizes,
+    error: prizeError,
+  } = usePrizes();
+
+  const handleTabChange = useCallback((tab: TabId) => {
+    setActiveTab(tab);
   }, []);
 
-  // Persist recipients to localStorage whenever they change
-  const updateRecipients = useCallback((newRecipients: Recipient[]) => {
-    setRecipients(newRecipients);
-    saveRecipients(newRecipients);
-  }, []);
-
-  // Persist prizes to localStorage whenever they change
-  const updatePrizes = useCallback((newPrizes: Prize[]) => {
-    setPrizes(newPrizes);
-    savePrizes(newPrizes);
-  }, []);
-
-  const renderPage = () => {
-    switch (activeTab) {
-      case 'dashboard':
-        return <Dashboard prizes={prizes} />;
-      case 'recipients':
-        return (
-          <Recipients
-            recipients={recipients}
-            prizes={prizes}
-            updateRecipients={updateRecipients}
-            updatePrizes={updatePrizes}
-          />
-        );
-      case 'prizes':
-        return (
-          <Prizes
-            prizes={prizes}
-            recipients={recipients}
-            updatePrizes={updatePrizes}
-          />
-        );
-      case 'reports':
-        return <Reports prizes={prizes} recipients={recipients} />;
-      default:
-        return <Dashboard prizes={prizes} />;
-    }
-  };
+  // Storage error banner
+  const storageError = recipientError || prizeError;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <h1 className="text-xl font-bold text-primary-700">PrizeFlow</h1>
-          </div>
+    <div className="min-h-screen bg-neutral-50">
+      <Navigation activeTab={activeTab} onTabChange={handleTabChange} />
+
+      {/* Storage error warning */}
+      {storageError && (
+        <div className="bg-warning-50 border-b border-warning-200 px-4 py-2" role="alert">
+          <p className="text-body-sm text-warning-700 text-center">
+            {storageError}
+          </p>
         </div>
-      </header>
-      <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {renderPage()}
+      )}
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Tab panels */}
+        <div
+          role="tabpanel"
+          id={`panel-${activeTab}`}
+          aria-labelledby={`tab-${activeTab}`}
+        >
+          <ErrorBoundary>
+            {activeTab === 'dashboard' && (
+              <Dashboard recipients={recipients} prizes={prizes} />
+            )}
+            {activeTab === 'recipients' && (
+              <Recipients
+                recipients={recipients}
+                addRecipient={addRecipient}
+                updateRecipient={updateRecipient}
+                deleteRecipient={deleteRecipient}
+                clearRecipientFromPrizes={clearRecipientFromPrizes}
+              />
+            )}
+            {activeTab === 'prizes' && (
+              <Prizes
+                prizes={prizes}
+                recipients={recipients}
+                addPrize={addPrize}
+                updatePrize={updatePrize}
+                deletePrize={deletePrize}
+                assignRecipient={assignRecipient}
+                unassignRecipient={unassignRecipient}
+                claimPrize={claimPrize}
+                unclaimPrize={unclaimPrize}
+              />
+            )}
+            {activeTab === 'reports' && (
+              <Reports prizes={prizes} recipients={recipients} />
+            )}
+          </ErrorBoundary>
+        </div>
       </main>
     </div>
   );
