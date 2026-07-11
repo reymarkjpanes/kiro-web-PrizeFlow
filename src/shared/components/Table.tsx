@@ -21,12 +21,12 @@ function Head({ children }: { children: React.ReactNode }) {
 }
 
 function Body({ children }: { children: React.ReactNode }) {
-  return <tbody className="divide-y divide-neutral-100 bg-white">{children}</tbody>;
+  return <tbody className="divide-y divide-neutral-200 bg-white">{children}</tbody>;
 }
 
 function Row({ children, highlighted }: { children: React.ReactNode; highlighted?: boolean }) {
   return (
-    <tr className={`${highlighted ? 'bg-primary-50' : 'even:bg-neutral-50/50'} transition-colors duration-fast`}>
+    <tr className={`${highlighted ? 'bg-primary-50' : 'even:bg-neutral-50'} transition-colors duration-fast`}>
       {children}
     </tr>
   );

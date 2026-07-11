@@ -7,3 +7,7 @@ export { usePrizes } from './usePrizes';
 export type { UsePrizesReturn } from './usePrizes';
 export { useRecipientFilter } from './useRecipientFilter';
 export type { UseRecipientFilterReturn } from './useRecipientFilter';
+export { useRBAC, RBACProvider } from './useRBAC';
+export type { RBACContextValue, RBACProviderProps } from './useRBAC';
+export { useFinancialSummary } from './useFinancialSummary';
+export type { UseFinancialSummaryReturn } from './useFinancialSummary';

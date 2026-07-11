@@ -1,6 +1,8 @@
-import { useCallback } from 'react';
-import { useLocalStorage } from './useLocalStorage';
+import { useState, useCallback, useRef } from 'react';
 import type { Prize } from '@/shared/types';
+import { safeLoadPrizes } from '../utils/migration';
+
+const STORAGE_KEY = 'prizeflow_prizes';
 
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -22,10 +24,42 @@ export interface UsePrizesReturn {
 
 /**
  * Manages prize state with localStorage persistence.
+ * Uses safeLoadPrizes to migrate legacy data on load and apply financial field defaults.
+ * Handles QuotaExceededError on write by retaining data in memory and setting a warning.
  * Provides clearRecipientFromPrizes for cascade delete coordination.
  */
 export function usePrizes(): UsePrizesReturn {
-  const { value: prizes, setValue: setPrizes, error } = useLocalStorage<Prize[]>('prizeflow_prizes', []);
+  const [error, setError] = useState<string | null>(() => {
+    const { error: loadError } = safeLoadPrizes(STORAGE_KEY);
+    return loadError;
+  });
+
+  const [prizes, setPrizesState] = useState<Prize[]>(() => {
+    const { prizes: loadedPrizes } = safeLoadPrizes(STORAGE_KEY);
+    return loadedPrizes;
+  });
+
+  const prizesRef = useRef(prizes);
+  prizesRef.current = prizes;
+
+  const setPrizes = useCallback((newValue: Prize[] | ((prev: Prize[]) => Prize[])) => {
+    const resolvedValue = typeof newValue === 'function'
+      ? newValue(prizesRef.current)
+      : newValue;
+
+    setPrizesState(resolvedValue);
+
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(resolvedValue));
+      setError(null);
+    } catch (e) {
+      if (e instanceof DOMException && e.name === 'QuotaExceededError') {
+        setError('Storage quota exceeded. Changes are retained in memory but may not persist across page refreshes.');
+      } else {
+        setError('Failed to save data. Changes may not persist.');
+      }
+    }
+  }, []);
 
   const addPrize = useCallback((name: string, description: string) => {
     const newPrize: Prize = {
@@ -35,6 +69,13 @@ export function usePrizes(): UsePrizesReturn {
       recipientId: null,
       claimed: false,
       claimDate: null,
+      prizeValue: null,
+      currency: 'USD',
+      prizeType: 'physical',
+      fundingSource: null,
+      sponsor: null,
+      budgetCategory: null,
+      distributionStatus: 'pending',
     };
     setPrizes(prev => [...prev, newPrize]);
   }, [setPrizes]);

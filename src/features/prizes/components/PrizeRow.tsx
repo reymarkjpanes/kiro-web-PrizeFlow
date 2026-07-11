@@ -12,6 +12,8 @@ export interface PrizeRowProps {
   onAssign: (prizeId: string, recipientId: string) => void;
   onClaim: (prizeId: string) => void;
   onUnclaim: (prizeId: string) => void;
+  canEdit?: boolean;
+  canDelete?: boolean;
 }
 
 function PrizeRow({
@@ -23,6 +25,8 @@ function PrizeRow({
   onAssign,
   onClaim,
   onUnclaim,
+  canEdit = true,
+  canDelete = true,
 }: PrizeRowProps) {
   const selectId = useId();
 
@@ -123,6 +127,9 @@ function PrizeRow({
           size="small"
           onClick={handleEdit}
           aria-label={`Edit ${prize.name}`}
+          disabled={!canEdit}
+          aria-disabled={!canEdit || undefined}
+          title={!canEdit ? 'Action unavailable for current role' : undefined}
         >
           Edit
         </Button>
@@ -131,6 +138,9 @@ function PrizeRow({
           size="small"
           onClick={handleDelete}
           aria-label={`Delete ${prize.name}`}
+          disabled={!canDelete}
+          aria-disabled={!canDelete || undefined}
+          title={!canDelete ? 'Action unavailable for current role' : undefined}
         >
           Delete
         </Button>

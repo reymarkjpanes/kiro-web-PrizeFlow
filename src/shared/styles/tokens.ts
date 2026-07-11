@@ -9,6 +9,17 @@
  * These constants exist for TypeScript type safety and programmatic access.
  */
 
+/**
+ * Semantic Color Palette
+ *
+ * All color pairings are WCAG AA compliant (≥4.5:1 contrast ratio):
+ * - primary-700 on white: ~7.2:1
+ * - neutral-900 on white: ~15.4:1
+ * - neutral-700 on neutral-50: ~8.3:1
+ * - success-700 on white: ~5.1:1
+ * - warning-800 on white: ~5.9:1
+ * - danger-700 on white: ~5.5:1
+ */
 export const COLORS = {
   primary: {
     50: '#eef2ff',
@@ -72,6 +83,19 @@ export const COLORS = {
   },
 } as const;
 
+/**
+ * Typographic Scale
+ *
+ * Minimum 0.25rem difference between adjacent heading levels:
+ * - display: 2.25rem
+ * - h1: 1.875rem (diff from display: 0.375rem ✓)
+ * - h2: 1.5rem   (diff from h1: 0.375rem ✓)
+ * - h3: 1.25rem  (diff from h2: 0.25rem ✓)
+ * - h4: 1rem     (diff from h3: 0.25rem ✓)
+ * - body: 1rem
+ * - body-sm: 0.875rem
+ * - caption: 0.75rem
+ */
 export const TYPOGRAPHY = {
   display: { fontSize: '2.25rem', lineHeight: '2.5rem', fontWeight: '700' },
   h1: { fontSize: '1.875rem', lineHeight: '2.25rem', fontWeight: '700' },
@@ -83,6 +107,12 @@ export const TYPOGRAPHY = {
   caption: { fontSize: '0.75rem', lineHeight: '1rem', fontWeight: '500' },
 } as const;
 
+/**
+ * Spacing Scale (4px base)
+ *
+ * Built on a 4px base unit for consistent visual rhythm.
+ * Key values: 8px (2), 16px (4), 24px (6), 32px (8), 48px (12)
+ */
 export const SPACING = {
   1: '4px',
   2: '8px',
@@ -110,8 +140,35 @@ export const SHADOWS = {
   lg: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
 } as const;
 
+/**
+ * Transition Durations
+ *
+ * - fast (150ms): Used for removals, modal dismiss, micro-interactions
+ * - normal (200ms): Used for tab transitions, content switches, standard animations
+ * - slow (300ms): Used for progress bars, complex layout shifts
+ */
 export const TRANSITIONS = {
   fast: '150ms',
   normal: '200ms',
   slow: '300ms',
+} as const;
+
+/**
+ * Animation Durations
+ *
+ * Semantic animation timing constants for programmatic use.
+ * Maps to Tailwind's duration-fast (150ms) and default (200ms) utilities.
+ *
+ * - tabTransition (200ms): Tab content fade/slide on navigation change
+ * - modalOpen (150ms): Dialog scale+fade on open
+ * - modalClose (150ms): Dialog scale+fade on close
+ * - listItemEnter (200ms): Fade-in for new list items
+ * - listItemExit (150ms): Fade-out for removed list items
+ */
+export const ANIMATION_DURATIONS = {
+  tabTransition: 200,
+  modalOpen: 150,
+  modalClose: 150,
+  listItemEnter: 200,
+  listItemExit: 150,
 } as const;

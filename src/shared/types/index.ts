@@ -42,7 +42,18 @@ export interface ValidationResult {
   errors: Record<string, string>;
 }
 
-// Keep existing types unchanged
+// --- Financial Type Definitions ---
+
+// Supported currencies (ISO 4217)
+export type SupportedCurrency = 'USD' | 'EUR' | 'GBP' | 'JPY' | 'CAD' | 'AUD' | 'CHF' | 'INR';
+
+// Prize type enum
+export type PrizeType = 'cash' | 'physical';
+
+// Distribution status enum
+export type DistributionStatus = 'pending' | 'in_progress' | 'distributed' | 'returned';
+
+// Extended Prize interface (backward-compatible)
 export interface Prize {
   id: string;
   name: string;
@@ -50,9 +61,73 @@ export interface Prize {
   recipientId: string | null;
   claimed: boolean;
   claimDate: string | null;
+  // Financial fields (all optional for backward compatibility)
+  prizeValue: number | null;        // 0.01 - 999,999,999.99
+  currency: SupportedCurrency;      // Default: 'USD'
+  prizeType: PrizeType;             // Default: 'physical'
+  fundingSource: string | null;     // Max 100 chars
+  sponsor: string | null;           // Max 100 chars
+  budgetCategory: string | null;    // Max 50 chars
+  distributionStatus: DistributionStatus; // Default: 'pending'
 }
 
-export type TabId = 'dashboard' | 'recipients' | 'prizes' | 'reports';
+// --- RBAC Type Definitions ---
+
+export type RoleName =
+  | 'Super Administrator'
+  | 'Event Administrator'
+  | 'Finance Officer'
+  | 'Distribution Officer'
+  | 'Staff'
+  | 'Auditor'
+  | 'Viewer';
+
+export type FeatureCategory =
+  | 'Dashboard'
+  | 'Recipients'
+  | 'Teams'
+  | 'Prize Management'
+  | 'Financial Management'
+  | 'Reports'
+  | 'Settings'
+  | 'Event Management';
+
+export type PermissionLevel =
+  | 'View'
+  | 'Create'
+  | 'Edit'
+  | 'Delete'
+  | 'Export'
+  | 'Assign'
+  | 'Approve';
+
+// The permission matrix is a nested record
+export type PermissionMatrixData = Record<RoleName, Record<FeatureCategory, PermissionLevel[]>>;
+
+// Role permissions for a single role
+export type RolePermissions = Record<FeatureCategory, PermissionLevel[]>;
+
+// --- Financial Summary Types ---
+
+export interface BudgetSummary {
+  totalBudget: number;
+  totalDistributed: number;
+  remainingBudget: number;
+  cashAwardsCount: number;
+  physicalAwardsCount: number;
+}
+
+export interface CurrencyTotal {
+  currency: SupportedCurrency;
+  total: number;
+  distributedTotal: number;
+  remaining: number;
+  count: number;
+}
+
+// --- Extended Tab Type ---
+
+export type TabId = 'dashboard' | 'recipients' | 'prizes' | 'reports' | 'rbac';
 
 export interface StorageResult<T> {
   data: T;

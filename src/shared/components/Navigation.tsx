@@ -5,6 +5,7 @@ import type { TabId } from '@/shared/types';
 export interface NavigationProps {
   activeTab: TabId;
   onTabChange: (tab: TabId) => void;
+  isTabVisible?: (tabId: TabId) => boolean;
 }
 
 const TABS: { id: TabId; label: string }[] = [
@@ -12,12 +13,15 @@ const TABS: { id: TabId; label: string }[] = [
   { id: 'recipients', label: 'Recipients' },
   { id: 'prizes', label: 'Prizes' },
   { id: 'reports', label: 'Reports' },
+  { id: 'rbac', label: 'RBAC' },
 ];
 
-function Navigation({ activeTab, onTabChange }: NavigationProps) {
+function Navigation({ activeTab, onTabChange, isTabVisible }: NavigationProps) {
   const tabListRef = useRef<HTMLDivElement>(null);
 
   useArrowNavigation(tabListRef, { orientation: 'horizontal', loop: true });
+
+  const visibleTabs = isTabVisible ? TABS.filter(tab => isTabVisible(tab.id)) : TABS;
 
   return (
     <nav className="sticky top-0 z-40 bg-white border-b border-neutral-200">
@@ -33,7 +37,7 @@ function Navigation({ activeTab, onTabChange }: NavigationProps) {
             aria-label="Main navigation"
             className="flex items-center gap-1"
           >
-            {TABS.map(tab => (
+            {visibleTabs.map(tab => (
               <button
                 key={tab.id}
                 role="tab"

@@ -30,3 +30,11 @@ export type { TagInputProps } from './TagInput';
 
 export { FilterPills } from './FilterPills';
 export type { FilterPillsProps, FilterPillOption } from './FilterPills';
+
+export { CurrencySelector, CURRENCY_OPTIONS } from './CurrencySelector';
+export type { CurrencySelectorProps } from './CurrencySelector';
+
+export { RoleSwitcher } from './RoleSwitcher';
+
+export { AnimatedList } from './AnimatedList';
+export type { AnimatedListProps } from './AnimatedList';

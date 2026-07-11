@@ -15,3 +15,11 @@ export {
 } from './recipientUtils';
 export { FORM_FIELDS_BY_TYPE, TYPE_BADGE_CONFIG, TYPE_SELECT_OPTIONS } from './recipientConfig';
 export type { FieldConfig, TypeBadgeConfig } from './recipientConfig';
+export { formatCurrencyValue } from './currency';
+export {
+  validatePrizeValue,
+  calculateBudgetSummary,
+  calculateCurrencyTotals,
+  getDominantCurrency,
+} from './financialCalc';
+export { migratePrizes, safeLoadPrizes } from './migration';

@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { Button, Badge, Dialog } from '@/shared/components';
 import type { Recipient, Prize, RecipientFormData } from '@/shared/types';
+import { useRBAC } from '@/shared/hooks';
 import { RecipientForm } from './RecipientForm';
 import { RecipientList } from './RecipientList';
 
@@ -26,6 +27,11 @@ function Recipients({
   const [showForm, setShowForm] = useState(false);
   const [editingRecipient, setEditingRecipient] = useState<Recipient | null>(null);
   const [deletingRecipient, setDeletingRecipient] = useState<Recipient | null>(null);
+
+  const { isActionEnabled } = useRBAC();
+  const canCreate = isActionEnabled('Recipients', 'Create');
+  const canEdit = isActionEnabled('Recipients', 'Edit');
+  const canDelete = isActionEnabled('Recipients', 'Delete');
 
   const addButtonRef = useRef<HTMLButtonElement>(null);
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
@@ -101,6 +107,9 @@ function Recipients({
           size="small"
           onClick={handleAdd}
           aria-label="Add Recipient"
+          disabled={!canCreate}
+          aria-disabled={!canCreate || undefined}
+          title={!canCreate ? 'Action unavailable for current role' : undefined}
         >
           Add Recipient
         </Button>
@@ -124,6 +133,8 @@ function Recipients({
         onDelete={handleDeleteRequest}
         onDuplicate={handleDuplicate}
         onAdd={handleAdd}
+        canEdit={canEdit}
+        canDelete={canDelete}
       />
 
       {/* Delete confirmation dialog */}
