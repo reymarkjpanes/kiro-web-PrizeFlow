@@ -84,7 +84,7 @@ function PrizeRow({
             id={selectId}
             value={prize.recipientId ?? ''}
             onChange={handleAssignChange}
-            className="text-caption border border-neutral-300 rounded-md px-2 py-1 bg-white text-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-fast"
+            className="text-caption border border-neutral-300 rounded-md px-2 py-1.5 bg-white text-neutral-700 min-h-[36px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:border-primary-500 transition-colors duration-fast"
             aria-label={`Assign recipient to ${prize.name}`}
           >
             <option value="">Unassigned</option>

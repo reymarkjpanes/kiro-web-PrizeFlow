@@ -17,8 +17,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const sizeClasses = {
-      default: 'px-4 py-2 text-body-sm gap-2',
-      small: 'px-3 py-1.5 text-caption gap-1.5',
+      default: 'px-4 py-2.5 text-body-sm gap-2 min-h-[44px]',
+      small: 'px-3 py-2 text-caption gap-1.5 min-h-[36px]',
     };
 
     const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : '';

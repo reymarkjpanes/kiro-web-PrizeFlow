@@ -32,4 +32,12 @@
     white-space: nowrap;
     border-width: 0;
   }
+
+  /* Minimum touch target sizing for tablet viewports */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .touch-target {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
 }

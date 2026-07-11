@@ -45,7 +45,7 @@ function Reports({ prizes, recipients }: ReportsProps) {
           role="tab"
           aria-pressed={activeTab === 'claimed'}
           onClick={handleTabClaimed}
-          className={`px-4 py-2 text-body-sm font-medium rounded-md transition-all duration-200 ${
+          className={`px-4 py-2 text-body-sm font-medium rounded-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-[44px] ${
             activeTab === 'claimed'
               ? 'bg-white text-neutral-900 shadow-sm'
               : 'text-neutral-500 hover:text-neutral-700'
@@ -58,7 +58,7 @@ function Reports({ prizes, recipients }: ReportsProps) {
           role="tab"
           aria-pressed={activeTab === 'unclaimed'}
           onClick={handleTabUnclaimed}
-          className={`px-4 py-2 text-body-sm font-medium rounded-md transition-all duration-200 ${
+          className={`px-4 py-2 text-body-sm font-medium rounded-md transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 min-h-[44px] ${
             activeTab === 'unclaimed'
               ? 'bg-white text-neutral-900 shadow-sm'
               : 'text-neutral-500 hover:text-neutral-700'

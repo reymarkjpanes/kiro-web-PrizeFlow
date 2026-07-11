@@ -42,7 +42,7 @@ function Navigation({ activeTab, onTabChange }: NavigationProps) {
                 aria-controls={`panel-${tab.id}`}
                 tabIndex={activeTab === tab.id ? 0 : -1}
                 onClick={() => onTabChange(tab.id)}
-                className={`px-3 py-2 text-body-sm font-medium rounded-md transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${
+                className={`px-3 py-2 text-body-sm font-medium rounded-md transition-all duration-fast min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 ${
                   activeTab === tab.id
                     ? 'text-primary-700 bg-primary-50'
                     : 'text-neutral-500 hover:text-neutral-700 hover:bg-neutral-50'
