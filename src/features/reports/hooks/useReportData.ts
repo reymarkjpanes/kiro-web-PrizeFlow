@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
-import type { Prize, Recipient } from '@/shared/types';
+import type { Prize, Recipient, RecipientType } from '@/shared/types';
 
 export interface EnrichedPrize extends Prize {
   recipientName: string;
+  recipientType: RecipientType | '';
 }
 
 export interface UseReportDataReturn {
@@ -14,7 +15,7 @@ export interface UseReportDataReturn {
 
 /**
  * Processes prizes and recipients into report-ready data.
- * Enriches prizes with recipient names and provides filtered views.
+ * Enriches prizes with recipient names and types, provides filtered views.
  */
 export function useReportData(
   prizes: Prize[],
@@ -22,8 +23,8 @@ export function useReportData(
   search?: string
 ): UseReportDataReturn {
   const recipientMap = useMemo(() => {
-    const map = new Map<string, string>();
-    recipients.forEach(r => map.set(r.id, r.name));
+    const map = new Map<string, { name: string; type: RecipientType }>();
+    recipients.forEach(r => map.set(r.id, { name: r.displayName, type: r.type }));
     return map;
   }, [recipients]);
 
@@ -32,9 +33,11 @@ export function useReportData(
     const unclaimed: EnrichedPrize[] = [];
 
     prizes.forEach(prize => {
+      const recipientData = prize.recipientId ? recipientMap.get(prize.recipientId) : undefined;
       const enriched: EnrichedPrize = {
         ...prize,
-        recipientName: prize.recipientId ? recipientMap.get(prize.recipientId) ?? '' : '',
+        recipientName: recipientData?.name ?? '',
+        recipientType: recipientData?.type ?? '',
       };
 
       if (prize.claimed) {

@@ -1,4 +1,5 @@
 import type { Recipient, Prize } from '@/shared/types';
+import { TYPE_BADGE_CONFIG } from '@/shared/utils';
 import { useDashboardStats } from '../hooks/useDashboardStats';
 import { DashboardCard } from './DashboardCard';
 
@@ -8,7 +9,7 @@ export interface DashboardProps {
 }
 
 function Dashboard({ recipients, prizes }: DashboardProps) {
-  const { totalRecipients, totalPrizes, claimedCount, unclaimedCount, claimRate } =
+  const { totalRecipients, totalPrizes, claimedCount, unclaimedCount, claimRate, typeBreakdown } =
     useDashboardStats(recipients, prizes);
 
   return (
@@ -21,6 +22,27 @@ function Dashboard({ recipients, prizes }: DashboardProps) {
         <DashboardCard label="Claimed" value={claimedCount} variant="success" />
         <DashboardCard label="Unclaimed" value={unclaimedCount} variant="warning" />
       </div>
+
+      {/* Recipients by Type breakdown */}
+      {typeBreakdown.length > 0 && (
+        <div className="space-y-2">
+          <h2 className="text-body-sm font-medium text-neutral-700">Recipients by Type</h2>
+          <div className="flex flex-wrap gap-2">
+            {typeBreakdown.map(({ type, count }) => {
+              const config = TYPE_BADGE_CONFIG[type];
+              return (
+                <span
+                  key={type}
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-caption font-medium ring-1 ring-inset ${config.classes}`}
+                >
+                  {config.label}
+                  <span className="font-semibold">{count}</span>
+                </span>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Progress indicator */}
       <div className="space-y-2">
